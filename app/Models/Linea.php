@@ -9,4 +9,14 @@ class Linea extends Model
 {
     /** @use HasFactory<\Database\Factories\LineaFactory> */
     use HasFactory;
+
+    protected $fillable = ['usuario_id', 'zapato_id', 'cantidad'];
+
+    public function factura(){
+        return $this->belongsTo(Factura::class);
+    }
+
+    public function zapato(){
+        return $this->belongsTo(Zapato::class);
+    }
 }
