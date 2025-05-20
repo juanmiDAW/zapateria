@@ -33,6 +33,20 @@ new class extends Component
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    @if (auth()->user())
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link :href="route('carritos.index')" :active="request()->routeIs('carritos.index')" wire:navigate>
+                            {{ __('Ver carrito') }}
+                        </x-nav-link>
+                    </div>
+                    @else
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link>
+                            {{ __('Sin carrito') }}
+                        </x-nav-link>
+                    </div>
+                    @endif
                 </div>
             </div>
 
