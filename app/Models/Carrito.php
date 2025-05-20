@@ -16,8 +16,8 @@ class Carrito extends Model
         return $this->belongsTo(Usuario::class);
     }
 
-    public function zapatos(){
-        return $this->belongsToMany(Zapato::class);
+    public function zapato(){
+        return $this->belongsTo(Zapato::class);
     }
 
 

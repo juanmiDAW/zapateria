@@ -13,7 +13,11 @@ class CarritoController extends Controller
      */
     public function index()
     {
-        //
+        $carritos = Carrito::with('zapato')->where('usuario_id', auth()->user()->id)->get();
+
+        return view('carritos.index', [
+            'carritos' => $carritos
+        ]);
     }
 
     /**
