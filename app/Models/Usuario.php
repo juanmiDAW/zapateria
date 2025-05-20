@@ -12,7 +12,7 @@ class Usuario extends Model
     /** @use HasFactory<\Database\Factories\UsuarioFactory> */
     use HasFactory;
 
-    protected $filalble = ['nombre', 'password'];
+    protected $fillable = ['nombre', 'password'];
 
     public function carrtitos(){
         return $this->hasMany(Carrito::class);
