@@ -46,4 +46,26 @@ Route::get('carritos/meter{id}', function ($id) {
     return redirect()->route('inicio');
 })->name('anyadir');
 
+Route::get('carritos/sacar{id}', function ($id) {
+
+    $cantidad = Carrito::where('usuario_id', auth()->user()->id)->where('zapato_id', $id)->first()->cantidad ?? 0;
+
+    if ($cantidad > 0) {
+        Carrito::where('usuario_id', auth()->user()->id)->where('zapato_id', $id)->update([
+            'cantidad' => $cantidad - 1
+        ]);
+    } elseif ($cantidad == 0) {
+        Carrito::create([
+            'usuario_id' => auth()->user()->id,
+            'zapato_id' => $id,
+            'cantidad' => $cantidad + 1,
+        ]);
+    };
+
+
+    return redirect()->route('inicio');
+})->name('anyadir');
+
+
+
 Route::resource('carritos', CarritoController::class);
