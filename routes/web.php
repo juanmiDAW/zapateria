@@ -64,7 +64,16 @@ Route::get('carritos/sacar{id}', function ($id) {
 
 
     return redirect()->route('inicio');
-})->name('anyadir');
+})->name('sacar');
+
+Route::get('carrito/mas{id}', function($id){
+    $cantidad = Carrito::where('zapato_id', $id)->where('usuario_id', auth()->user()->id)->first()->cantidad;
+    Carrito::where('zapato_id',$id)->update([
+        'cantidad'=>$cantidad + 1,
+    ]);
+
+    return redirect()->route('carritos.index');
+})->name('mas');
 
 
 
