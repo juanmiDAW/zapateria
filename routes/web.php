@@ -46,30 +46,28 @@ Route::get('carritos/meter{id}', function ($id) {
     return redirect()->route('inicio');
 })->name('anyadir');
 
-Route::get('carritos/sacar{id}', function ($id) {
+Route::get('carritos/menos{id}', function ($id) {
 
     $cantidad = Carrito::where('usuario_id', auth()->user()->id)->where('zapato_id', $id)->first()->cantidad ?? 0;
-
+    $cantidad = $cantidad - 1;
     if ($cantidad > 0) {
         Carrito::where('usuario_id', auth()->user()->id)->where('zapato_id', $id)->update([
-            'cantidad' => $cantidad - 1
-        ]);
-    } elseif ($cantidad == 0) {
-        Carrito::create([
-            'usuario_id' => auth()->user()->id,
-            'zapato_id' => $id,
-            'cantidad' => $cantidad + 1,
+            'cantidad' => $cantidad
         ]);
     };
 
+    if ($cantidad == 0) {
+        Carrito::where('usuario_id', auth()->user()->id)->where('zapato_id', $id)->delete();
+    };
+    return redirect()->route('carritos.index');
+})->name('menos');
 
-    return redirect()->route('inicio');
-})->name('sacar');
-
-Route::get('carrito/mas{id}', function($id){
+Route::get('carrito/mas{id}', function ($id) {
     $cantidad = Carrito::where('zapato_id', $id)->where('usuario_id', auth()->user()->id)->first()->cantidad;
-    Carrito::where('zapato_id',$id)->update([
-        'cantidad'=>$cantidad + 1,
+    $cantidad = $cantidad +1;
+
+    Carrito::where('zapato_id', $id)->update([
+        'cantidad' => $cantidad,
     ]);
 
     return redirect()->route('carritos.index');
