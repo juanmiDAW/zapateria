@@ -3,6 +3,8 @@
 use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\ZapatoController;
 use App\Models\Carrito;
+use App\Models\Factura;
+use App\Models\Linea;
 use App\Models\Zapato;
 use Illuminate\Support\Facades\Route;
 
@@ -72,6 +74,25 @@ Route::get('carrito/mas{id}', function ($id) {
 
     return redirect()->route('carritos.index');
 })->name('mas');
+
+Route::get('carrito/factura', function(){
+
+    $carritos = Carrito::with('zapato')->where('usuario_id', auth()->user()->id)->get();
+    
+    $factura = Factura::create([
+        'usuario_id' => auth()->user()->id,
+    ]);
+
+    foreach ($carritos as $carrito){
+        Linea::create([
+            'factura_id' => $factura->id,
+            'zapato_id' => $carrito->zapato->id,
+            'cantidad' => $carrito->cantidad,
+        ]);
+    };
+return redirect() -> route('inicio');
+
+})->name('realizarPedido');
 
 
 
